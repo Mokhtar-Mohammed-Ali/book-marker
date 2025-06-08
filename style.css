@@ -1,0 +1,70 @@
+body {
+  background-color: #fcefdc;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+}
+h1 {
+  color: #352e28;
+  position: relative;
+  font-size: 50px;
+
+  font-weight: bold;
+  font-family: "Pacifico", cursive;
+  display: inline-block;
+  position: relative;
+}
+
+h1::after {
+  content: "";
+  position: absolute;
+  height: 30%;
+  width: 100%;
+  left: 0;
+  top: 70%;
+  background-color: #ffcb31;
+  margin-bottom: 0px;
+  z-index: -1;
+  transition: all 0.5s;
+}
+h1:hover::after {
+  top: 20px;
+  height: 80%;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  color: #4caf50;
+    font-family: "Alumni Sans SC", sans-serif;
+}
+.form-icon {
+  margin-right: 5px;
+}
+.btn-submit {
+  background-color:  #c9302c;
+  color: white !important;
+   
+  transition: background-color 0.3s;
+}
+.btn-submit:hover {
+  background-color: #a53b20;
+ 
+}
+table {
+  background-color: white;
+}
+hr {
+  border-top: 2px dotted #333;
+}
+.form-control:focus {
+  box-shadow: none;
+  border: 2px solid #4caf50;
+}
+.messege{
+  font-family: "Alumni Sans SC", sans-serif;
+}
+.url-info{
+   font-family: "Alumni Sans SC", sans-serif;
+   color: #c9302c;
+   font-size: 20px;
+  
+}
