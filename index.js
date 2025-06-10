@@ -1,6 +1,7 @@
 var nameInput = document.getElementById("name-url");
 var urlInput = document.getElementById("link-url");
 var urlList = JSON.parse(localStorage.getItem("urlList")) || [];
+
 console.log(urlList);
 displayResults();
 var editingId = null;
@@ -11,9 +12,24 @@ function generateId() {
 function addUrl(event) {
   event.preventDefault();
   var urlValue = urlInput.value.trim();
+  var nameValue = nameInput.value.trim();
 
+  if (!isValidName(nameValue)) {
+    Swal.fire({
+      title: "Please enter a valid Name",
+      icon: "error",
+      draggable: true,
+    });
+
+    return;
+  }
   if (!isValidUrl(urlValue)) {
-    alert("Please enter a valid URL starting with http://, https:// or www.");
+    Swal.fire({
+      title: "Please enter a valid URL starting with http://, https:// or www.",
+      icon: "error",
+      draggable: true,
+    });
+
     return;
   }
 
@@ -55,7 +71,7 @@ function displayResults(list = urlList) {
           <td>
                       <div class="d-flex align-content-center justify-content-between  flex-wrap">
 
-           <p class="url-info">"${list[i].linkUrl.slice(0, 15) + " ..."}"</p>
+           <p class="url-info">${list[i].linkUrl.slice(0, 15) + " ..."}</p>
             <a href="${list[i].linkUrl}" class="btn btn-success">
               <i class="bi bi-eye-fill"></i> Visit
             </a>
@@ -83,10 +99,14 @@ function displayResults(list = urlList) {
     document.getElementById("content").innerHTML = cartona;
   }
 }
-
+//validation
 function isValidUrl(url) {
-  const pattern = /^(https?:\/\/|www\.)/i;
-  return pattern.test(url);
+  const urlRegex = /^(https:\/\/|www\.)[^\s]+\.com$/;
+  return urlRegex.test(url);
+}
+function isValidName(name) {
+  const nameRegex = /^[\p{L} ]{4,20}$/u;
+  return nameRegex.test(name.trim());
 }
 
 function searchUrlsByName(searchText) {
@@ -104,9 +124,26 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
 });
 
 function deleteUrl(id) {
-  urlList = urlList.filter((item) => item.id !== id);
-  localStorage.setItem("urlList", JSON.stringify(urlList));
-  displayResults();
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      urlList = urlList.filter((item) => item.id !== id);
+      localStorage.setItem("urlList", JSON.stringify(urlList));
+      displayResults();
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your file has been deleted.",
+        icon: "success",
+      });
+    }
+  });
 }
 function fillInputsToUpdate(id) {
   const item = urlList.find((item) => item.id === id);
@@ -120,14 +157,29 @@ function fillInputsToUpdate(id) {
 }
 
 function updateUrl(event) {
-  event.preventDefault(); 
+  event.preventDefault();
 
   if (!editingId) return;
 
   const urlValue = urlInput.value.trim();
+  const nameValue = nameInput.value.trim();
 
+  if (!isValidName(nameValue)) {
+    Swal.fire({
+      title: "Please enter a valid Name",
+      icon: "error",
+      draggable: true,
+    });
+
+    return;
+  }
   if (!isValidUrl(urlValue)) {
-    alert("Please enter a valid URL starting with http://, https:// or www.");
+    Swal.fire({
+      title: "Please enter a valid URL starting with http://, https:// or www.",
+      icon: "error",
+      draggable: true,
+    });
+
     return;
   }
 
