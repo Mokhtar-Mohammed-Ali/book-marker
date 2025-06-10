@@ -33,8 +33,10 @@ h1:hover::after {
 
 .section-title {
   font-size: 1.8rem;
-  color: #4caf50;
+color: transparent;
     font-family: "Alumni Sans SC", sans-serif;
+background: linear-gradient(90deg,rgba(62, 165, 91, 1) 63%, rgba(158, 178, 59, 1) 99%);
+ background-clip: text;
 }
 .form-icon {
   margin-right: 5px;
