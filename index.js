@@ -1,7 +1,8 @@
 var nameInput = document.getElementById("name-url");
 var urlInput = document.getElementById("link-url");
 var urlList = JSON.parse(localStorage.getItem("urlList")) || [];
-
+var urlValue = urlInput.value.trim();
+var nameValue = nameInput.value.trim();
 console.log(urlList);
 displayResults();
 var editingId = null;
@@ -14,24 +15,30 @@ function addUrl(event) {
   var urlValue = urlInput.value.trim();
   var nameValue = nameInput.value.trim();
 
-  if (!isValidName(nameValue)) {
-    Swal.fire({
-      title: "Please enter a valid Name",
-      icon: "error",
-      draggable: true,
-    });
+  // befor refactor
+  // if (!regex.nameRegex.test(nameValue)) {
+  //   Swal.fire({
+  //     title: regex.messegeForNmae,
+  //     icon: "error",
+  //     draggable: true,
+  //   });
 
-    return;
-  }
-  if (!isValidUrl(urlValue)) {
-    Swal.fire({
-      title: "Please enter a valid URL starting with http://, https:// or www.",
-      icon: "error",
-      draggable: true,
-    });
+  //   return;
+  // }
+  // if (!regex.urlRegex.test(urlValue))  {
+  //   Swal.fire({
+  //     title: regex.messegeForUrl,
+  //     icon: "error",
+  //     draggable: true,
+  //   });
 
+  //   return;
+  // }
+
+  if (showValidationError(regex.nameRegex, nameValue, regex.messegeForName))
     return;
-  }
+  if (showValidationError(regex.urlRegex, urlValue, regex.messegeForUrl))
+    return;
 
   var urlObject = {
     id: generateId(),
@@ -49,6 +56,8 @@ function addUrl(event) {
 function resetInputs() {
   nameInput.value = "";
   urlInput.value = "";
+  nameInput.classList.remove("is-valid", "is-invalid");
+  urlInput.classList.remove("is-valid", "is-invalid");
 }
 
 function displayResults(list = urlList) {
@@ -66,13 +75,19 @@ function displayResults(list = urlList) {
       cartona += `
          <tr>
           <td>${i + 1}</td>
-          <td>${list[i].name}</td>
+          <td class="bg-body-tertiary text-uppercase text-success fw-bold fst-italic ">${
+            list[i].name
+          }</td>
          
           <td>
-                      <div class="d-flex align-content-center justify-content-between  flex-wrap">
+                      <div class="d-flex align-items-center justify-content-between flex-wrap">
 
-           <p class="url-info">${list[i].linkUrl.slice(0, 15) + " ..."}</p>
-            <a href="${list[i].linkUrl}" class="btn btn-success">
+           <p class="url-info fw-bold fst-italic my-auto">${
+             list[i].linkUrl.slice(0, 15) + " ..."
+           }</p>
+            <a href="${
+              list[i].linkUrl
+            }" class="btn btn-success d-flex align-items-center">
               <i class="bi bi-eye-fill"></i> Visit
             </a>
           </div>
@@ -100,19 +115,42 @@ function displayResults(list = urlList) {
   }
 }
 //validation
-function isValidUrl(url) {
-  const urlRegex = /^(https:\/\/|www\.)[^\s]+\.com$/;
-  return urlRegex.test(url);
+
+var regex = {
+  urlRegex: /^(https?:\/\/)?(www\.)?[^\s]+\.[^\s]{2,}$/i,
+  messegeForUrl: "Please enter a valid URL",
+  nameRegex: /^[\p{L} ]{3,20}$/u,
+  messegeForName: "Please enter a valid Name",
+};
+function isValid(regex, input) {
+  return regex.test(input);
 }
-function isValidName(name) {
-  const nameRegex = /^[\p{L} ]{4,20}$/u;
-  return nameRegex.test(name.trim());
+
+function showValidationError(regex, value, message) {
+  if (!regex.test(value.trim())) {
+    Swal.fire({
+      title: message,
+      icon: "error",
+      draggable: true,
+    });
+    return true;
+  }
+  return false;
 }
+// befor refactor
+// function isValidUrl(url) {
+//   var urlRegex =/^(https:\/\/|www\.)[^\s]+\.com$/;
+//   return urlRegex.test(url);
+// }
+// function isValidName(name) {
+//   var nameRegex = /^[\p{L} ]{4,20}$/;
+//   return nameRegex.test(name.trim());
+// }
 
 function searchUrlsByName(searchText) {
-  const lowerSearch = searchText.toLowerCase();
+  var lowerSearch = searchText.toLowerCase();
 
-  const filtered = urlList.filter((item) =>
+  var filtered = urlList.filter((item) =>
     item.name.toLowerCase().includes(lowerSearch)
   );
 
@@ -146,7 +184,7 @@ function deleteUrl(id) {
   });
 }
 function fillInputsToUpdate(id) {
-  const item = urlList.find((item) => item.id === id);
+  var item = urlList.find((item) => item.id === id);
   if (item) {
     nameInput.value = item.name;
     urlInput.value = item.linkUrl;
@@ -158,32 +196,35 @@ function fillInputsToUpdate(id) {
 
 function updateUrl(event) {
   event.preventDefault();
-
+  var urlValue = urlInput.value.trim();
+  var nameValue = nameInput.value.trim();
   if (!editingId) return;
 
-  const urlValue = urlInput.value.trim();
-  const nameValue = nameInput.value.trim();
+  // befor refactor
+  // if (!isValid(regex.nameRegex, nameValue)) {
+  //   Swal.fire({
+  //     title: "Please enter a valid Name",
+  //     icon: "error",
+  //     draggable: true,
+  //   });
 
-  if (!isValidName(nameValue)) {
-    Swal.fire({
-      title: "Please enter a valid Name",
-      icon: "error",
-      draggable: true,
-    });
+  //   return;
+  // }
+  // if (!isValid(regex.urlRegex, urlValue)) {
+  //   Swal.fire({
+  //     title: "Please enter a valid URL starting with http://, https:// or www.",
+  //     icon: "error",
+  //     draggable: true,
+  //   });
 
+  //   return;
+  // }
+  if (showValidationError(regex.nameRegex, nameValue, regex.messegeForName))
     return;
-  }
-  if (!isValidUrl(urlValue)) {
-    Swal.fire({
-      title: "Please enter a valid URL starting with http://, https:// or www.",
-      icon: "error",
-      draggable: true,
-    });
-
+  if (showValidationError(regex.urlRegex, urlValue, regex.messegeForUrl))
     return;
-  }
 
-  const index = urlList.findIndex((item) => item.id === editingId);
+  var index = urlList.findIndex((item) => item.id === editingId);
   if (index !== -1) {
     urlList[index].name = nameInput.value.trim();
     urlList[index].linkUrl = urlValue;
@@ -196,5 +237,18 @@ function updateUrl(event) {
     document.getElementById("addBtn").classList.remove("d-none");
 
     editingId = null;
+  }
+}
+
+function updateValidationStyle(inputElement, regex) {
+  var value = inputElement.value.trim();
+
+  inputElement.classList.remove("is-valid", "is-invalid");
+
+  if (value === "") return;
+  if (regex.test(value)) {
+    inputElement.classList.add("is-valid");
+  } else {
+    inputElement.classList.add("is-invalid");
   }
 }
