@@ -1,3 +1,9 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   background-color: #fcefdc;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -33,23 +39,26 @@ h1:hover::after {
 
 .section-title {
   font-size: 1.8rem;
-color: transparent;
-    font-family: "Alumni Sans SC", sans-serif;
-background: linear-gradient(90deg,rgba(62, 165, 91, 1) 63%, rgba(158, 178, 59, 1) 99%);
- background-clip: text;
+  color: transparent;
+  font-family: "Alumni Sans SC", sans-serif;
+  background: linear-gradient(
+    90deg,
+    rgba(62, 165, 91, 1) 63%,
+    rgba(158, 178, 59, 1) 99%
+  );
+  background-clip: text;
 }
 .form-icon {
   margin-right: 5px;
 }
 .btn-submit {
-  background-color:  #c9302c;
+  background-color: #c9302c;
   color: white !important;
-   
+
   transition: background-color 0.3s;
 }
 .btn-submit:hover {
   background-color: #a53b20;
- 
 }
 table {
   background-color: white;
@@ -61,12 +70,15 @@ hr {
   box-shadow: none;
   border: 2px solid #4caf50;
 }
-.messege{
+.messege {
   font-family: "Alumni Sans SC", sans-serif;
 }
-.url-info{
-   font-family: "Alumni Sans SC", sans-serif;
-   color: #c9302c;
-   font-size: 20px;
-  
+.url-info {
+  font-family: "Alumni Sans SC", sans-serif;
+  color: #c9302c;
+  font-size: 20px;
+}
+.form-control.is-valid:focus,
+.form-control.is-invalid:focus {
+  box-shadow: none;
 }
