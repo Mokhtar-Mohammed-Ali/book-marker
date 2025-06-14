@@ -1,8 +1,7 @@
 var nameInput = document.getElementById("name-url");
 var urlInput = document.getElementById("link-url");
 var urlList = JSON.parse(localStorage.getItem("urlList")) || [];
-var urlValue = urlInput.value.trim();
-var nameValue = nameInput.value.trim();
+
 console.log(urlList);
 displayResults();
 var editingId = null;
@@ -122,9 +121,6 @@ var regex = {
   nameRegex: /^[\p{L} ]{3,20}$/u,
   messegeForName: "Please enter a valid Name",
 };
-function isValid(regex, input) {
-  return regex.test(input);
-}
 
 function showValidationError(regex, value, message) {
   if (!regex.test(value.trim())) {
@@ -138,6 +134,10 @@ function showValidationError(regex, value, message) {
   return false;
 }
 // befor refactor
+
+// function isValid(regex, input) {
+//   return regex.test(input);
+// }
 // function isValidUrl(url) {
 //   var urlRegex =/^(https:\/\/|www\.)[^\s]+\.com$/;
 //   return urlRegex.test(url);
